@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>Hello rtc.io World!</title>
+<link rel="stylesheet" href="vendor/pure-min.css">
+<link rel="stylesheet" type="text/css" href="helloworld.css">
+</head>
+<body class="pure-g">
+    <div class="pure-u-1-5">
+        <div id="l-video"></div>
+    </div>
+    <div class="pure-u-4-5" id="r-video"></div>
+    <script src="vendor/rtc.min.js"></script>
+    <script src="vendor/rtc.ios.js"></script>
+    <script>
+    RTC({ plugins: [ RTC.IOS() ]});
+    </script>
+</body>
+</html>
