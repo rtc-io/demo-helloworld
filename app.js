@@ -1,4 +1,4 @@
-RTC({
+var conference = RTC({
   // use the public google stun servers :)
   ice: [
     { url: 'stun1.l.google.com:19302' },
