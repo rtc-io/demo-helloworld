@@ -20,7 +20,20 @@ npm install
 gulp
 ```
 
-This will provide you information on the various build options available to you that have been provided in the [`gulpfile`](gulpfile.js).
+This will provide you information on the various build options available to you that have been provided in the [`gulpfile`](gulpfile.js).  This should be something similar to what is displayed below:
+
+```
+Usage
+  gulp [task]
+
+Available tasks
+  help            Display this help text.
+  package         Package for upload to build.rtc.io
+  serve           Serve the local files using a development server
+  vendor          Rebuild vendor scripts from node package dependencies
+  vendor-rtc
+  vendor-rtc-ios
+```
 
 ## build.rtc.io ready
 
