@@ -1,11 +1,27 @@
-var gulp = require('gulp');
+var gulp = require('gulp-help')(require('gulp'));
 var zip = require('gulp-zip');
+var gutil = require('gulp-util');
+var st = require('st');
+var http = require('http');
+var port = process.env.PORT || 3000;
 
-gulp.task('default', ['package'], function() {
-  // place code for your default task here
+gulp.task('serve', 'Serve the local files using a development server', function(cb) {
+  var mount = st({
+    path: process.cwd(),
+    index: 'index.html',
+    cache: false
+  });
+
+  http.createServer(mount).listen(port, function(err) {
+    if (! err) {
+      gutil.log('server running @ http://localhost:' + port + '/');
+    }
+
+    cb(err);
+  });
 });
 
-gulp.task('package', function() {
+gulp.task('package', 'Package for upload to build.rtc.io', function() {
   return gulp.src([
     './*',
     'vendor/*',
@@ -18,7 +34,7 @@ gulp.task('package', function() {
   .pipe(gulp.dest('.//'));
 });
 
-gulp.task('vendor', ['vendor-rtc', 'vendor-rtc-ios']);
+gulp.task('vendor', 'Rebuild vendor scripts from node package dependencies', ['vendor-rtc', 'vendor-rtc-ios']);
 
 gulp.task('vendor-rtc', function() {
   return gulp
