@@ -10,10 +10,10 @@
       <icon size="40x40" file="icons/Icon-Small-40.png" idiom="all" />
       <icon size="58x58" file="icons/Icon-Small@2x.png" idiom="iphone" />
       <icon size="58x58" file="icons/Icon-Small@2x.png" idiom="ipad" />
-      <icon size="76x76" file="icons/Icon76.png" idiom="ipad" />
+      <icon size="76x76" file="icons/Icon-76.png" idiom="ipad" />
       <icon size="80x80" file="icons/Icon-Small-40@2x.png" idiom="all" />
-      <icon size="120x120" file="icons/Icon60@2x.png" idiom="iphone" />
-      <icon size="152x152" file="icons/Icon76@2x.png" idiom="ipad" />
+      <icon size="120x120" file="icons/Icon-60@2x.png" idiom="iphone" />
+      <icon size="152x152" file="icons/Icon-76@2x.png" idiom="ipad" />
     </icons>
   </ios>
 </config>
