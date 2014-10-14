@@ -6,9 +6,16 @@ gulp.task('default', ['package'], function() {
 });
 
 gulp.task('package', function() {
-  return gulp.src(['./*', 'vendor/*', '!archive.zip', '!gulpfile.js', '!package.json'], { base: '.' })
-    .pipe(zip('archive.zip'))
-    .pipe(gulp.dest('.//'));
+  return gulp.src([
+    './*',
+    'vendor/*',
+    'icons/*',
+    '!archive.zip',
+    '!gulpfile.js',
+    '!package.json'
+  ], { base: '.' })
+  .pipe(zip('archive.zip'))
+  .pipe(gulp.dest('.//'));
 });
 
 gulp.task('vendor', ['vendor-rtc', 'vendor-rtc-ios']);
