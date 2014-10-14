@@ -21,6 +21,7 @@
   "homepage": "https://github.com/rtc-io/demo-helloworld",
   "devDependencies": {
     "gulp": "^3.8.8",
+    "gulp-zip": "^2.0.2",
     "rtc": "^2.1.7",
     "rtc-plugin-nicta-ios": "^1.2.0"
   }
