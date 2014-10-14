@@ -24,7 +24,7 @@
     "gulp-help": "^1.2.0",
     "gulp-util": "^3.0.1",
     "gulp-zip": "^2.0.2",
-    "rtc": "^2.1.7",
+    "rtc": "^3.0.1",
     "rtc-plugin-nicta-ios": "^1.2.0",
     "st": "^0.5.2"
   }
