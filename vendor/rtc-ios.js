@@ -91,6 +91,43 @@ var init = exports.init = function(opts, callback) {
   document.addEventListener('deviceready', ready);
 };
 
+exports.attach = function(stream, opts) {
+  var canvas = prepareElement(opts, (opts || {}).el);
+  var context = canvas.getContext('2d');
+  var lastWidth = 0;
+  var lastHeight = 0;
+
+  // if we are a proxyied stream, get the original stream
+  if (stream && stream.__orig) {
+    stream = stream.__orig;
+  }
+
+  iOSRTC_onDrawRegi(stream, function(imgData, width, height) {
+    var resized = false;
+    try {
+      var img = new Image();
+      resized = width !== lastWidth || height !== lastHeight;
+
+      img.onload = function() {
+        if (resized) {
+          context.canvas.width = width;
+          context.canvas.height = height;
+        }
+        context.drawImage(img, 0, 0, width, height);
+      };
+      img.src = imgData;
+    }
+    catch (e) {
+      console.log('encountered error while drawing video');
+      console.log('error: ' + e.message);
+    }
+
+    // update the last width and height
+    lastWidth = width;
+    lastHeight = height;
+  });
+};
+
 /**
   ### attachStream(stream, bindings)
 
@@ -147,7 +184,7 @@ exports.attachStream = function(stream, bindings) {
   not implement this function.
 
 **/
-exports.prepareElement = function(opts, element) {
+var prepareElement = exports.prepareElement = function(opts, element) {
   var shouldReplace = (element instanceof HTMLVideoElement) ||
       (element instanceof HTMLAudioElement);
 
