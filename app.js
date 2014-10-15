@@ -15,10 +15,10 @@
 
       // use the public google stun servers :)
       ice: [
-        { url: 'stun1.l.google.com:19302' },
-        { url: 'stun2.l.google.com:19302' },
-        { url: 'stun3.l.google.com:19302' },
-        { url: 'stun4.l.google.com:19302' }
+        { url: 'stun:stun1.l.google.com:19302' },
+        { url: 'stun:stun2.l.google.com:19302' },
+        { url: 'stun:stun3.l.google.com:19302' },
+        { url: 'stun:stun4.l.google.com:19302' }
       ],
 
       room: 'helloworld:' + room,
