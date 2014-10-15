@@ -26,7 +26,7 @@
       // we want this to work on iOS as well so we will use
       // the rtc-plugin-nicta-ios plugin so we can use the
       // build.rtc.io to create a native iOS app
-      plugins: [ RTC.IOS ]
+      plugins: [ RTC.IOS, RTC.Temasys ]
     });
   }
 
