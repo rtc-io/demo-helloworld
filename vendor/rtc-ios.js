@@ -6,6 +6,7 @@ var ProxyMediaStream = require('rtc-proxy/mediastream');
 var ProxyPeerConnection = require('rtc-proxy/peerconnection');
 var reNICTAUserAgent = /\(iOS\;.*Mobile\/NICTA/;
 var deviceReady = false;
+var initialized = false;
 
 /**
   # rtc-plugin-nicta-ios
@@ -36,8 +37,7 @@ var deviceReady = false;
 
 **/
 exports.supported = function(platform) {
-  return typeof navigator != 'undefined' &&
-    reNICTAUserAgent.test(navigator.userAgent);
+  return typeof navigator != 'undefined' && reNICTAUserAgent.test(navigator.userAgent);
 };
 
 /**
@@ -48,12 +48,17 @@ exports.supported = function(platform) {
 
 **/
 var init = exports.init = function(opts, callback) {
-  // override console log
-  var oldLogger = window.console.log;
-
   function ready(evt) {
+    var oldLogger;
+
+    if (initialized) {
+      return callback();
+    }
+
     document.removeEventListener('deviceready', ready);
 
+    // override the console.log implementation to report back to the iOS console
+    oldLogger = window.console.log;
     console.log = function(msg) {
       var nativeMessage = [].slice.call(arguments).join(' ');
 
@@ -75,8 +80,8 @@ var init = exports.init = function(opts, callback) {
       };
     }
 
-    console.log('navigator.getUserMedia = ', typeof navigator.getUserMedia);
-    console.log('getUserMedia = ', typeof getUserMedia);
+    initialized = true;
+    console.log('iOS plugin initialized, getUserMedia available = ' + (!!navigator.getUserMedia));
 
     callback();
   }
