@@ -59,7 +59,7 @@ var init = exports.init = function(opts, callback) {
 
     // override the console.log implementation to report back to the iOS console
     oldLogger = window.console.log;
-    console.log = function(msg) {
+    window.console.log = function(msg) {
       var nativeMessage = [].slice.call(arguments).join(' ');
 
       try {
@@ -69,7 +69,7 @@ var init = exports.init = function(opts, callback) {
         alert(nativeMessage);
       }
 
-      oldLogger.apply(console, arguments);
+      oldLogger.apply(window.console, arguments);
     };
 
     if (typeof getUserMedia == 'function') {
@@ -222,15 +222,12 @@ var prepareElement = exports.prepareElement = function(opts, element) {
     // add the classes from the source element to the canvas
     canvas.className = element.className;
 
-//     Object.keys(srcStyle).forEach(function(key) {
-//       canvas.style[key] = srcStyle[key];
-//     });
-
     console.log('inserting canvas');
     container.insertBefore(canvas, element);
     container.removeChild(element);
   }
-  else {
+  // if we have an existing DOM node, then append to the container
+  else if (container) {
     container.appendChild(canvas);
   }
 
