@@ -35,7 +35,11 @@ gulp.task('package', 'Package for upload to build.rtc.io', function() {
   .pipe(gulp.dest('.//'));
 });
 
-gulp.task('vendor', 'Rebuild vendor scripts from node package dependencies', ['vendor-rtc', 'vendor-rtc-ios']);
+gulp.task('vendor', 'Rebuild vendor scripts from node package dependencies', [
+  'vendor-rtc',
+  'plugin-ios',
+  'plugin-temasys'
+]);
 
 gulp.task('vendor-rtc', function() {
   return gulp
@@ -43,8 +47,14 @@ gulp.task('vendor-rtc', function() {
     .pipe(gulp.dest('vendor/'));
 });
 
-gulp.task('vendor-rtc-ios', function() {
+gulp.task('plugin-ios', function() {
   return gulp
     .src('node_modules/rtc-plugin-nicta-ios/dist/*')
+    .pipe(gulp.dest('vendor/'));
+});
+
+gulp.task('plugin-temasys', function() {
+  return gulp
+    .src('node_modules/rtc-plugin-temasys/dist/*')
     .pipe(gulp.dest('vendor/'));
 });
