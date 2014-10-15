@@ -10,6 +10,9 @@
     }
 
     conference = RTC({
+      // use the rtc.io development and testing switchboard
+      signaller: 'https://switchboard.rtc.io',
+
       // use the public google stun servers :)
       ice: [
         { url: 'stun1.l.google.com:19302' },
