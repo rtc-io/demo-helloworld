@@ -1,0 +1,48 @@
+.controlbar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: #f8f8f8;
+  border-top: 0;
+  border-bottom: 1px #888;
+  padding: 2px;
+}
+
+.controlbar input[type="text"] {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 2vh 2vw;
+  border: 0;
+}
+
+.controlbar input[type="text"]:focus {
+  outline: 0;
+}
+
+.controlbar button {
+  min-width: 120px;
+  padding: 2vh 6px;
+  outline: 0;
+}
+
+.roomdata {
+  width: 100vw;
+  position: absolute;
+  -webkit-transform: translateY(-100px) translateZ(0px);
+  transform: translateY(-100px) translateZ(0px);
+  z-index: 100;
+}
+
+.roomdata.ready {
+  -webkit-transition: -webkit-transform ease-in-out 0.5s;
+  transition: transform ease-in-out 0.5s;
+}
+
+.roomdata.active {
+  -webkit-transform: translateY(0px);
+  -ms-transform: translateY(0px);
+  transform: translateY(0px);
+}
