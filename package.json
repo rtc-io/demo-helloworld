@@ -1,6 +1,6 @@
 {
   "name": "demo-helloworld",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A literal \"hello world\" demo constructed with the rtc.io packages using rtc.js",
   "main": "index.js",
   "private": true,
