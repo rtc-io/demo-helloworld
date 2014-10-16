@@ -43,6 +43,68 @@ This is a demo that has been constructed from the ground-up to be compatible wit
 gulp package
 ```
 
+## iOS build
+
+To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
+You can use the zipDir.sh shell command - it will exclude the .git files.
+
+[build.rtc.io](http://build.rtc.io) generates an Apple package (.ipa or .app) which is ready to install on an iPhone/iPad or to publish on the Apple App Store.
+
+
+### Pre-requisites
+
+To complete a build for app package, you just need a structured web applicate with config.xml in the root of the package.
+
+To complete a build for an ipa package, you will need the following:
+
+* Apple id enrolled in iOS Dev.
+* Valid distribution provision under the Apple id above.
+* A structured web application with config.xml in the root of the package (this is an example of such an app).
+
+
+### Example of config.xml
+The `config.xml` is a regular XML-File. It has a strict structure like described here.
+```xml
+<config>
+    <name>HelloWebRTC</name>
+    <author email="webrtc@nicta.com.au" href="http://rtc.io">Jeff Wang</author>
+    <content path="html" src="index.html"/>
+    <bundle domain="com.mobileRTC" version="1.0" />
+    <ios>
+       <build version="1.2" sdkversion="7.1" config="release"/>
+       <icons>
+           <icon size="29x29" file="icons/Icon29x29.png" idiom="ipad" />
+           <icon size="40x40" file="icons/Icon40x40.png" idiom="all" />
+           <icon size="58x58" file="icons/Icon58x58.png" idiom="iphone" />
+           <icon size="58x58" file="icons/Icon58x58.png" idiom="ipad" />
+           <icon size="76x76" file="icons/Icon76x76.png" idiom="ipad" />
+           <icon size="80x80" file="icons/Icon80x80.png" idiom="all" />
+           <icon size="120x120" file="icons/Icon120x120.png" idiom="iphone" />
+           <icon size="152x152" file="icons/Icon152x152.png" idiom="ipad" />
+       </icons>
+    </ios>
+</config>
+```
+#### Name element
+The `config.xml` file **must** have a `name`-tag, which gives the ipa package its name.
+
+#### Content tag
+The `content`-tag **must** have a `path` attribute that defines the correct directory where the html start page can be found. By default, the application will try to load a index.html file from the `path` directory. You can change the start page's name by setting the `src` attribute.
+
+#### Bundle tag
+The `config.xml` file **must** have a 'bundle'-tag which defines the app's reverse-domain identifier in the `domain` attribute and it's version number expressed in major/minor notation.
+
+#### iOS and build tag
+The `ios`-tag defines the requirements for an iOS build. The `build`-tag is mandatory and defines the minimum system sdkversion and a config for release/debug build. The `version` attribute defines the build version.
+
+#### Icons structure
+The `icons` structure contains a list of icons of different pixel dimensions used for the app on different iOS version. All `icon`-tags **must** have a `size` attribute which adhere to fixed values. If the Web developer uploads an icon mismatching the given size, it could result in iOS ignoring it and replacing it with the white default icon.
+
+The `file` attribute provides the file name for the icon. If the app is only built for one device, it can be a empty string to show it is not supported.
+
+The `idiom` attribute **must** be given for showing which device will use this icon.
+
+
 ## LICENSE
 
 This demo is licensed under the [MIT LICENSE](https://raw.githubusercontent.com/rtc-io/demo-helloworld/gh-pages/LICENSE)
