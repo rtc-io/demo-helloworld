@@ -37,6 +37,12 @@ Available tasks
 
 ## build.rtc.io ready
 
-This is a demo that has been constructed from the ground-up to be compatible with a soon to be released hosted build service that will produce WebRTC enabled iOS applications in process similar to (and inspired by) [PhoneGap build](http://build.phonegap.com).
+This is a demo that has been constructed from the ground-up to be compatible with a [soon to be released hosted build service](http://build.rtc.io/) that will produce WebRTC enabled iOS applications in process similar to (and inspired by) [PhoneGap build](http://build.phonegap.com). To package an archive ready for upload to the service, using the following command:
 
-##
+```
+gulp package
+```
+
+## LICENSE
+
+This demo is licensed under the [MIT LICENSE](LICENSE)
