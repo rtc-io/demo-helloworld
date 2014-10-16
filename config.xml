@@ -2,7 +2,7 @@
   <name>HelloWebRTCWorld</name>
   <author email="damon.oehlman@nicta.com.au" href="http://rtc.io">Damon Oehlman</author>
   <content path="/" src="index.html"/>
-  <bundle domain="mobileRTC" version="1.0" />
+  <bundle domain="io.rtc.helloworld" version="1.0" />
   <ios>
     <build version="1.2" sdkversion="7.1" config="release"/>
     <icons>
