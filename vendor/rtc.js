@@ -1585,6 +1585,7 @@ module.exports = function(plugins) {
 var rtc = require('rtc-tools');
 var mbus = require('mbus');
 var cleanup = require('rtc-tools/cleanup');
+var detectPlugin = require('rtc-core/plugin');
 var debug = rtc.logger('rtc-quickconnect');
 var defaults = require('cog/defaults');
 var extend = require('cog/extend');
@@ -1712,6 +1713,8 @@ module.exports = function(signalhost, opts) {
 
   // save the plugins passed to the signaller
   var plugins = signaller.plugins = (opts || {}).plugins || [];
+  var plugin = detectPlugin(signaller.plugins);
+  var pluginReady;
 
   // check how many local streams have been expected (default: 0)
   var expectedLocalStreams = parseInt((opts || {}).expectedLocalStreams, 10) || 0;
@@ -1791,6 +1794,11 @@ module.exports = function(signalhost, opts) {
   function checkReadyToAnnounce() {
     clearTimeout(announceTimer);
     if (! allowJoin) {
+      return;
+    }
+
+    // if we have a plugin but it's not initialized we aren't ready
+    if (plugin && (! pluginReady)) {
       return;
     }
 
@@ -1886,6 +1894,17 @@ module.exports = function(signalhost, opts) {
         channelReady();
       }
     }, 500);
+  }
+
+  function initPlugin() {
+    return plugin && plugin.init(opts, function(err) {
+      if (err) {
+        return console.error('Could not initialize plugin: ', err);
+      }
+
+      pluginReady = true;
+      checkReadyToAnnounce();
+    });
   }
 
   function handleLocalAnnounce(data) {
@@ -2314,12 +2333,17 @@ module.exports = function(signalhost, opts) {
     checkReadyToAnnounce();
   });
 
+  // if we plugin is active, then initialize it
+  if (plugin) {
+    initPlugin();
+  }
+
   // pass the signaller on
   return signaller;
 };
 
 }).call(this,require('_process'))
-},{"_process":4,"cog/defaults":5,"cog/extend":6,"cog/getable":7,"mbus":23,"rtc-core/genice":19,"rtc-signaller":26,"rtc-tools":41,"rtc-tools/cleanup":37}],23:[function(require,module,exports){
+},{"_process":4,"cog/defaults":5,"cog/extend":6,"cog/getable":7,"mbus":23,"rtc-core/genice":19,"rtc-core/plugin":21,"rtc-signaller":26,"rtc-tools":41,"rtc-tools/cleanup":37}],23:[function(require,module,exports){
 var createTrie = require('array-trie');
 var reDelim = /[\.\:]/;
 
@@ -4549,6 +4573,9 @@ var METHOD_EVENTS = {
   createAnswer: 'answer'
 };
 
+// define states in which we will attempt to finalize a connection on receiving a remote offer
+var VALID_RESPONSE_STATES = ['have-remote-offer', 'have-local-pranswer'];
+
 /**
   # rtc-taskqueue
 
@@ -4672,7 +4699,7 @@ module.exports = function(pc, opts) {
   }
 
   function completeConnection() {
-    if (pc.signalingState === 'have-remote-offer') {
+    if (VALID_RESPONSE_STATES.indexOf(pc.signalingState) >= 0) {
       return tq.createAnswer();
     }
   }
