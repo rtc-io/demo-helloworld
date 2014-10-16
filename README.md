@@ -46,7 +46,7 @@ gulp package
 ## iOS build
 
 To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
-You can use the zipDir.sh shell command - it will exclude the .git files.
+You can use the `gulp package` command - it will include only those files required to build the application.
 
 [build.rtc.io](http://build.rtc.io) generates an Apple package (.ipa or .app) which is ready to install on an iPhone/iPad or to publish on the Apple App Store.
 
@@ -64,27 +64,29 @@ To complete a build for an ipa package, you will need the following:
 
 ### Example of config.xml
 The `config.xml` is a regular XML-File. It has a strict structure like described here.
+
 ```xml
 <config>
-    <name>HelloWebRTC</name>
-    <author email="webrtc@nicta.com.au" href="http://rtc.io">Jeff Wang</author>
-    <content path="html" src="index.html"/>
-    <bundle domain="com.mobileRTC" version="1.0" />
-    <ios>
-       <build version="1.2" sdkversion="7.1" config="release"/>
-       <icons>
-           <icon size="29x29" file="icons/Icon29x29.png" idiom="ipad" />
-           <icon size="40x40" file="icons/Icon40x40.png" idiom="all" />
-           <icon size="58x58" file="icons/Icon58x58.png" idiom="iphone" />
-           <icon size="58x58" file="icons/Icon58x58.png" idiom="ipad" />
-           <icon size="76x76" file="icons/Icon76x76.png" idiom="ipad" />
-           <icon size="80x80" file="icons/Icon80x80.png" idiom="all" />
-           <icon size="120x120" file="icons/Icon120x120.png" idiom="iphone" />
-           <icon size="152x152" file="icons/Icon152x152.png" idiom="ipad" />
-       </icons>
-    </ios>
+  <name>HelloWebRTCWorld</name>
+  <author email="damon.oehlman@nicta.com.au" href="http://rtc.io">Damon Oehlman</author>
+  <content path="/" src="index.html"/>
+  <bundle domain="io.rtc.helloworld" version="1.0" />
+  <ios>
+    <build version="1.2" sdkversion="7.1" config="release"/>
+    <icons>
+      <icon size="29x29" file="icons/Icon-Small.png" idiom="ipad" />
+      <icon size="40x40" file="icons/Icon-Small-40.png" idiom="all" />
+      <icon size="58x58" file="icons/Icon-Small@2x.png" idiom="iphone" />
+      <icon size="58x58" file="icons/Icon-Small@2x.png" idiom="ipad" />
+      <icon size="76x76" file="icons/Icon-76.png" idiom="ipad" />
+      <icon size="80x80" file="icons/Icon-Small-40@2x.png" idiom="all" />
+      <icon size="120x120" file="icons/Icon-60@2x.png" idiom="iphone" />
+      <icon size="152x152" file="icons/Icon-76@2x.png" idiom="ipad" />
+    </icons>
+  </ios>
 </config>
 ```
+
 #### Name element
 The `config.xml` file **must** have a `name`-tag, which gives the ipa package its name.
 
