@@ -24,10 +24,13 @@ gulp.task('serve', 'Serve the local files using a development server', function(
 gulp.task('package', 'Package for upload to build.rtc.io', function() {
   return gulp.src([
     './*',
+    '!*.zip',
     'vendor/*',
+    '!vendor/*.zip',
     'css/*',
+    '!css/*.zip',
     'icons/*',
-    '!archive.zip',
+    '!icons/*.zip',
     '!gulpfile.js',
     '!package.json'
   ], { base: '.' })
