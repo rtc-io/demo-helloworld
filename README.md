@@ -45,4 +45,4 @@ gulp package
 
 ## LICENSE
 
-This demo is licensed under the [MIT LICENSE](LICENSE)
+This demo is licensed under the [MIT LICENSE](https://raw.githubusercontent.com/rtc-io/demo-helloworld/gh-pages/LICENSE)
