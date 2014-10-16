@@ -364,15 +364,7 @@ exports.supported = function(platform) {
   document is prepared correctly.
 
 **/
-var init = exports.init = function(opts, callback) {
-  if (loader.plugin) {
-    return callback(null, loader.plugin);
-  }
-
-  loader.once('init', function() {
-    callback(null, loader.plugin);
-  });
-};
+var init = exports.init = loader.init;
 
 exports.attach = function(stream, opts) {
   var element = (opts || {}).el;
@@ -482,12 +474,38 @@ var crel = require('crel');
 var config = require('./config');
 var EventEmitter = require('events').EventEmitter;
 var loader = module.exports = new EventEmitter();
+var windowReady = false;
+var initialized = false;
 
 // initialise the loader plugin id
 var pluginId = loader.pluginId = '__temasys_plugin_' + config.genId();
 
 // initialise the loader pageid
 var pageId = loader.pageId = config.genId();
+
+loader.init = function(opts, callback) {
+  if (typeof opts == 'function') {
+    callback = opts;
+    opts = {};
+  }
+
+  if (initialized) {
+    return callback(null, loader.plugin);
+  }
+
+  if (! windowReady) {
+    window.addEventListener('load', function() {
+      loader.init(callback);
+    });
+
+    return;
+  }
+
+  loader.plugin = createPlugin();
+  loader.once('init', function() {
+    callback(null, loader.plugin);
+  });
+};
 
 // patch in the onload handler into the window object
 window['__load' + pluginId] = function() {
@@ -504,7 +522,10 @@ window['__load' + pluginId] = function() {
   loader.plugin.setLogFunction(console);
 
   // patch navigator getUserMedia function to the plugin
-  navigator.getUserMedia = getUserMedia;
+  navigator.getUserMedia = __getUserMedia;
+
+  // flag initialized
+  initialized = true;
   loader.emit('init');
 };
 
@@ -533,7 +554,7 @@ function createPlugin() {
   return plugin;
 }
 
-function getUserMedia(constraints, successCb, failureCb) {
+function __getUserMedia(constraints, successCb, failureCb) {
   if (! loader.plugin) {
     return failureCb && failureCb(new Error('plugin not loaded'));
   }
@@ -555,7 +576,7 @@ function getUserMedia(constraints, successCb, failureCb) {
 }
 
 window.addEventListener('load', function() {
-  loader.plugin = createPlugin(); // document.querySelector('object[type="' + config.mimetype + '"]');
+  windowReady = true;
 });
 
 },{"./config":2,"crel":5,"events":1}],5:[function(require,module,exports){
