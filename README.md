@@ -4,7 +4,7 @@ This is a demonstration app that provides you a starting point for building your
 
 If you are comfortable using with [browserify](http://browserify.org/) then you should be able to dig and use some of the lower-level packages such as [`rtc-quickconnect`](https://github.com/rtc-io/rtc) and [others](http://rtc.io/modules.html) after playing with this demo.
 
-If you just want to create a Zip file without nisntalling gulp, that's possible, too. Read the below secion on "Creating a zip file without installing node.js, npm and gulp".
+If you just want to create a Zip file without installing gulp, that's possible, too. Read the below secion on "Creating a zip file without installing node.js, npm and gulp".
 
 
 ## Getting Started
