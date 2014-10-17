@@ -41,7 +41,7 @@ Available tasks
 ```
 
 
-## Creating a zip file without installing node.js, npm and gulp
+## Creating a zip file without node, npm and gulp
 
 To prepare a zip file of this demo application for upload to http://build.rtc.io without installing node.js, npm and gulp, simply do the following:
 
