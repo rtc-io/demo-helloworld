@@ -1,7 +1,7 @@
 # !/bin/bash
 
 if [ $# -lt 3 ]; then
-	echo "usage: $0 source identity [-p provisioning] [-e entitlements] target" >&2
+	echo "usage: $0 source identity [-p provisioning] [-e entitlements] target.ipa" >&2
 	exit 1
 fi
 

@@ -66,6 +66,11 @@ This is a demo that has been constructed from the ground-up to be compatible wit
 gulp package
 ```
 
+### Testing
+
+When you have built it and installed on an iOS device, you can connect with it via http://rtc-io.github.io/demo-helloworld/#yourRoom (make sure to use the same room in the URL fragment that you've chosen in the iOS app).
+
+
 ## iOS build
 
 To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
