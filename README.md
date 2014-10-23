@@ -49,7 +49,7 @@ You can either use gulp to prepare the zip file for upload, or zip directly.
 
 ### Use gulp to prepare archive.zip
 
-To package an archive ready for upload to the service, using the following command:
+To package an archive ready for upload to the service, use the following command:
 
 ```
 gulp package
@@ -65,6 +65,8 @@ git clone https://github.com/rtc-io/demo-helloworld.git
 cd demo-helloworld
 zip -r archive.zip . -x *.git* -x *.zip -x gulpfile.js -x package.json -x "node_modules/*"
 ```
+
+The archive.zip file will in the demo-helloworld directory ready for upload.
 
 
 ### Testing
