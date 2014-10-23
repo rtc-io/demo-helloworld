@@ -45,7 +45,7 @@ elif [ "${ORIGINAL_FILE##*.}" = "app" ]
 	then
 		# Copy the app file into an ipa-like structure
 		mkdir -p "temp/Payload"
-		cp -Rf "$ORIGINAL_FILE" "temp/Payload/$ORIGINAL_FILE"
+		cp -Rf "$ORIGINAL_FILE" "temp/Payload/"
 else
 	echo "Error: Only can resign .app files and .ipa files." >&2
 	exit
