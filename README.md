@@ -40,31 +40,32 @@ Available tasks
   vendor-rtc-ios
 ```
 
-
-## Creating a zip file without node, npm and gulp
-
-To prepare a zip file of this demo application for upload to http://build.rtc.io without installing node.js, npm and gulp, simply do the following:
-
-### Prerequisites
-
-- git
-
-### Clone and Go
-
-```
-git clone https://github.com/rtc-io/demo-helloworld.git
-cd demo-helloworld
-zip -r rtc-build-demo.zip . -x *.git* -x *.zip -x gulpfile.js -x package.json -x "node_modules/*"
-```
-
-
 ## build.rtc.io ready
 
-This is a demo that has been constructed from the ground-up to be compatible with a [hosted build service](http://build.rtc.io/) that will produce WebRTC enabled iOS applications in process similar to (and inspired by) [PhoneGap build](http://build.phonegap.com). To package an archive ready for upload to the service, using the following command:
+This is a demo that has been constructed from the ground-up to be compatible with a [hosted build service](http://build.rtc.io/) that will produce WebRTC enabled iOS applications in process similar to (and inspired by) [PhoneGap build](http://build.phonegap.com).
+
+You can either use gulp to prepare the zip file for upload, or zip directly.
+
+
+### Use gulp to prepare archive.zip
+
+To package an archive ready for upload to the service, using the following command:
 
 ```
 gulp package
 ```
+
+The archive.zip file will in the demo-helloworld directory ready for upload.
+
+
+### Creating a zip file without node, npm and gulp
+
+```
+git clone https://github.com/rtc-io/demo-helloworld.git
+cd demo-helloworld
+zip -r archive.zip . -x *.git* -x *.zip -x gulpfile.js -x package.json -x "node_modules/*"
+```
+
 
 ### Testing
 
