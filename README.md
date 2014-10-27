@@ -44,7 +44,7 @@ Available tasks
 
 This is a demo that has been constructed from the ground-up to be compatible with a [hosted build service](http://build.rtc.io/) that will produce WebRTC enabled iOS applications in process similar to (and inspired by) [PhoneGap build](http://build.phonegap.com).
 
-Make sure to use your own domain value in the domain attribute of the &lt;bundle> element of the config.xml file as app ID's must be unique with Apple.
+Make sure to use *your own domain value* in the domain attribute of the &lt;bundle> element of the config.xml file as app ID's must be unique with Apple.
 
 To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
 
@@ -72,16 +72,6 @@ zip -r archive.zip . -x *.git* -x *.zip -x gulpfile.js -x package.json -x "node_
 ```
 
 The archive.zip file will in the demo-helloworld directory ready for upload.
-
-### Pre-requisites
-
-To complete a build for app package, you just need a structured web applicate with config.xml in the root of the package.
-
-To complete a build for an ipa package, you will need the following:
-
-* Apple id enrolled in iOS Dev.
-* Valid distribution provision under the Apple id above.
-* A structured web application with config.xml in the root of the package (this is an example of such an app).
 
 ### Testing
 
