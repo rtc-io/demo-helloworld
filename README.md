@@ -46,8 +46,12 @@ This is a demo that has been constructed from the ground-up to be compatible wit
 
 Make sure to use your own domain value in the domain attribute of the &lt;bundle> element of the config.xml file as app ID's must be unique with Apple.
 
-You can either use gulp to prepare the zip file for upload, or zip directly.
+To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
 
+You can use the `gulp package` command - it will include only those files required to build the application.
+You can also use zip directly - use the extended command as below.
+
+[build.rtc.io](http://build.rtc.io) generates an Apple package (.ipa or .app) which is ready to install on an iPhone/iPad or to publish on the Apple App Store.
 
 ### Use gulp to prepare archive.zip
 
@@ -59,7 +63,6 @@ gulp package
 
 The archive.zip file will in the demo-helloworld directory ready for upload.
 
-
 ### Creating a zip file without node, npm and gulp
 
 ```
@@ -69,20 +72,6 @@ zip -r archive.zip . -x *.git* -x *.zip -x gulpfile.js -x package.json -x "node_
 ```
 
 The archive.zip file will in the demo-helloworld directory ready for upload.
-
-
-### Testing
-
-When you have built it and installed on an iOS device, you can connect with it via http://rtc-io.github.io/demo-helloworld/#yourRoom (make sure to use the same room in the URL fragment that you've chosen in the iOS app).
-
-
-## iOS build
-
-To use this application with [build.rtc.io](http://build.rtc.io), prepare a zip file and upload it there.
-You can use the `gulp package` command - it will include only those files required to build the application.
-
-[build.rtc.io](http://build.rtc.io) generates an Apple package (.ipa or .app) which is ready to install on an iPhone/iPad or to publish on the Apple App Store.
-
 
 ### Pre-requisites
 
@@ -94,6 +83,9 @@ To complete a build for an ipa package, you will need the following:
 * Valid distribution provision under the Apple id above.
 * A structured web application with config.xml in the root of the package (this is an example of such an app).
 
+### Testing
+
+When you have built it and installed on an iOS device, you can connect with it via http://rtc-io.github.io/demo-helloworld/#yourRoom (make sure to use the same room in the URL fragment that you've chosen in the iOS app).
 
 ### Example of config.xml
 The `config.xml` is a regular XML-File. It has a strict structure like described here.
