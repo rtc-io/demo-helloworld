@@ -2,6 +2,7 @@
 /* jshint node: true */
 'use strict';
 
+var objectfit = require('objectfit');
 var ProxyMediaStream = require('rtc-proxy/mediastream');
 var ProxyPeerConnection = require('rtc-proxy/peerconnection');
 var reNICTAUserAgent = /\(iOS\;.*Mobile\/NICTA/;
@@ -11,10 +12,9 @@ var initialized = false;
 /**
   # rtc-plugin-nicta-ios
 
-  This is an experimental plugin for bridging the functionality provided
-  an in-progress NICTA iOS webkit plugin.  While this plugin integration
-  layer is provided opensource the iOS plugin is a commercial project
-  currently under development.
+  This is a plugin for bridging the functionality provided by a NICTA iOS webkit plugin.
+  While this plugin integration layer is provided opensource, the iOS plugin itself is
+  part of http://build.rtc.io/.
 
   ## Getting More Information
 
@@ -99,39 +99,47 @@ var init = exports.init = function(opts, callback) {
 exports.attach = function(stream, opts) {
   var canvas = prepareElement(opts, (opts || {}).el);
   var context = canvas.getContext('2d');
-  var lastWidth = 0;
-  var lastHeight = 0;
+  var fitter;
+  var img;
+
+  function handleWindowResize(evt) {
+    var bounds = canvas.getBoundingClientRect();
+    var style = window.getComputedStyle(canvas);
+    var fit = objectfit[style.objectFit] || objectfit.contain;
+
+    canvas.width = bounds.width;
+    canvas.height = bounds.height;
+
+    // get the fitter function
+    fitter = fit([0, 0, bounds.width, bounds.height]);
+    drawImage();
+  }
+
+  function drawImage() {
+    if (! img) {
+      return;
+    }
+
+    context.drawImage.apply(context, [img].concat(fitter([0, 0, img.width, img.height])));
+  }
 
   // if we are a proxyied stream, get the original stream
   if (stream && stream.__orig) {
     stream = stream.__orig;
   }
 
+  // handle window resizes and resize the canvas appropriately
+  window.addEventListener('resize', handleWindowResize, false);
+  window.addEventListener('load', handleWindowResize, false);
+
   iOSRTC_onDrawRegi(stream, function(imgData, width, height) {
-    var resized = false;
-
-    try {
-      var img = new Image();
-      resized = width !== lastWidth || height !== lastHeight;
-
-      img.onload = function() {
-        if (resized) {
-          context.canvas.width = width;
-          context.canvas.height = height;
-        }
-        context.drawImage(img, 0, 0, width, height);
-      };
-      img.src = imgData;
-    }
-    catch (e) {
-      console.log('encountered error while drawing video');
-      console.log('error: ' + e.message);
-    }
-
-    // update the last width and height
-    lastWidth = width;
-    lastHeight = height;
+    img = new Image();
+    img.onload = drawImage;
+    img.src = imgData;
   });
+
+  // handle the initial window resize
+  setTimeout(handleWindowResize, 10);
 
   return canvas;
 };
@@ -265,7 +273,124 @@ if (typeof document != 'undefined') {
   });
 }
 
-},{"rtc-proxy/mediastream":3,"rtc-proxy/peerconnection":6}],2:[function(require,module,exports){
+},{"objectfit":4,"rtc-proxy/mediastream":6,"rtc-proxy/peerconnection":9}],2:[function(require,module,exports){
+/**
+  ### contain
+
+  Use [letterboxing](http://en.wikipedia.org/wiki/Letterbox) or
+  [pillarboxing](http://en.wikipedia.org/wiki/Pillar_box_(film)) to resize
+  an object to fit within another containing rect, without affecting the
+  aspect ratio.
+
+**/
+module.exports = function(container, subject) {
+  var cw = container[2];
+  var ch = container[3];
+  var cr = cw / ch;
+
+  function contain(subject) {
+    var sw = subject[2];
+    var sh = subject[3];
+    var sr = sw / sh;
+    var result = [];
+
+    if (sr < cr) {
+      result[2] = (ch * sr) | 0;
+      result[3] = ch;
+      result[0] = (cw - result[2]) >> 1;
+      result[1] = 0;
+    }
+    else {
+      result[2] = cw;
+      result[3] = (cw / sr) | 0;
+      result[0] = 0;
+      result[1] = (ch - result[3]) >> 1;
+    }
+
+    // apply the offset
+    result[0] += container[0];
+    result[1] += container[1];
+
+    return result;
+  }
+
+  return subject ? contain(subject) : contain;
+};
+
+},{}],3:[function(require,module,exports){
+/**
+  ### cover
+
+  Ensure the subject completely fills the container leaving no whitespace
+  visible in the container.
+
+**/
+module.exports = function(container, subject) {
+  var cw = container[2];
+  var ch = container[3];
+  var cr = cw / ch;
+
+  function fit(subject) {
+    var sw = subject[2];
+    var sh = subject[3];
+    var sr = sw / sh;
+    var result = [];
+
+    if (sr < cr) {
+      result[2] = cw;
+      result[3] = (cw / sr) | 0;
+      result[0] = 1;
+      result[1] = -(result[3] - ch) >> 1;
+    }
+    else {
+      result[2] = (ch * sr) | 0;
+      result[3] = ch;
+      result[0] = -(result[2] - cw) >> 1;
+      result[1] = 0;
+    }
+
+    // apply the offset
+    result[0] += container[0];
+    result[1] += container[1];
+
+    return result;
+  }
+
+  return subject ? fit(subject) : fit;
+};
+
+},{}],4:[function(require,module,exports){
+/**
+  # objectfit
+
+  This is a suite of functions for fitting (possibly overflowing depending on
+  the technique) one rectangular shape into another rectangular region,
+  preserving aspect ratio.
+
+  ## Example Usage
+
+  Displayed below is an example of drawing an image on a canvas using the
+  `objectfit/contain` function.  It should be noted that as the functions
+  all use the same function signature, `objectfit/cover` could be used in
+  it's place.
+
+  <<< examples/contain.js
+
+  ## Reference
+
+  All objectfit functions use the following function signature:
+
+  ```
+  fit(container, => subject) => [x, y, width, height]
+  ```
+
+  ## Implementations
+
+**/
+exports.contain = require('./contain');
+exports.cover = require('./cover');
+
+},{"./contain":2,"./cover":3}],5:[function(require,module,exports){
 var EventEmitter = require('eventemitter3');
 var extend = require('cog/extend');
 
@@ -372,7 +497,7 @@ module.exports = function(prot, methods, attributes, events) {
   return prot;
 };
 
-},{"cog/extend":4,"eventemitter3":5}],3:[function(require,module,exports){
+},{"cog/extend":7,"eventemitter3":8}],6:[function(require,module,exports){
 var proxy = require('./index');
 
 function ProxyMediaStream(original) {
@@ -419,7 +544,7 @@ prot.clone = function() {
   return new ProxyMediaStream(this.__orig);
 };
 
-},{"./index":2}],4:[function(require,module,exports){
+},{"./index":5}],7:[function(require,module,exports){
 /* jshint node: true */
 'use strict';
 
@@ -454,7 +579,7 @@ module.exports = function(target) {
 
   return target;
 };
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -660,7 +785,7 @@ if ('object' === typeof module && module.exports) {
   module.exports = EventEmitter;
 }
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var proxy = require('./index');
 var ProxyMediaStream = require('./mediastream');
 
@@ -750,7 +875,7 @@ prot.getStreamById = function(id) {
   return stream;
 };
 
-},{"./index":2,"./mediastream":3}]},{},[1])(1)
+},{"./index":5,"./mediastream":6}]},{},[1])(1)
 });
 
 
