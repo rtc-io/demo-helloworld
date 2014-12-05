@@ -25,6 +25,7 @@ gulp.task('package', 'Package for upload to build.rtc.io', function() {
   return gulp.src([
     './*',
     '!*.zip',
+    '!*.ipa',
     'vendor/*',
     '!vendor/*.zip',
     'css/*',
