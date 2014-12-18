@@ -48,7 +48,7 @@
 
   function promptForRoom() {
     setTimeout(function() {
-      roomData.classList.add('active');
+      roomData && roomData.classList.add('active');
     }, 50);
   }
 
