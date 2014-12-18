@@ -5,7 +5,7 @@ body {
   margin: 0;
 }
 
-video {
+video, canvas {
   background: black;
   object-fit: cover;
 }
@@ -14,14 +14,15 @@ video {
   overflow: hidden;
   position: absolute;
   z-index: 100;
-  bottom: 20px;
-  width: 320px;
-  right: calc(50% - 160px);
+  bottom: 0px;
+  width: 40vw;
+  height: calc(40vw * 9/16);
+  left: 30vw;
 }
 
 #l-video > * {
-  max-width: 100%;
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
 }
 
 #r-video {
