@@ -329,12 +329,9 @@ var loader = require('./loader');
 
   <<< examples/capture.js
 
-  ## Example Usage (Conferencing)
-
-  A slightly more complicated example demonstrating conferencing between
-  machines is displayed below.
-
-  <<< examples/conference.js
+  For a more detailed example (which includes video conferencing, please have
+  a look at our [helloworld demo](https://github.com/rtc-io/demo-helloworld) which
+  can be easily modified to use our Temasys plugin layer.
 
   ## Reference
 
@@ -627,6 +624,13 @@ window.addEventListener('load', function() {
 }(this, function () {
     var fn = 'function',
         obj = 'object',
+        nodeType = 'nodeType',
+        textContent = 'textContent',
+        setAttribute = 'setAttribute',
+        attrMapString = 'attrMap',
+        isNodeString = 'isNode',
+        isElementString = 'isElement',
+        d = typeof document === obj ? document : {},
         isType = function(a, type){
             return typeof a === type;
         },
@@ -637,18 +641,18 @@ window.addEventListener('load', function() {
         function(object){
             return object &&
                 isType(object, obj) &&
-                ('nodeType' in object) &&
+                (nodeType in object) &&
                 isType(object.ownerDocument,obj);
         },
         isElement = function (object) {
-            return crel.isNode(object) && object.nodeType === 1;
+            return crel[isNodeString](object) && object[nodeType] === 1;
         },
         isArray = function(a){
             return a instanceof Array;
         },
         appendChild = function(element, child) {
-          if(!isNode(child)){
-              child = document.createTextNode(child);
+          if(!crel[isNodeString](child)){
+              child = d.createTextNode(child);
           }
           element.appendChild(child);
         };
@@ -661,22 +665,22 @@ window.addEventListener('load', function() {
             settings = args[1],
             childIndex = 2,
             argumentsLength = args.length,
-            attributeMap = crel.attrMap;
+            attributeMap = crel[attrMapString];
 
-        element = crel.isElement(element) ? element : document.createElement(element);
+        element = crel[isElementString](element) ? element : d.createElement(element);
         // shortcut
         if(argumentsLength === 1){
             return element;
         }
 
-        if(!isType(settings,obj) || crel.isNode(settings) || isArray(settings)) {
+        if(!isType(settings,obj) || crel[isNodeString](settings) || isArray(settings)) {
             --childIndex;
             settings = null;
         }
 
         // shortcut if there is only one child that is a string
-        if((argumentsLength - childIndex) === 1 && isType(args[childIndex], 'string') && element.textContent !== undefined){
-            element.textContent = args[childIndex];
+        if((argumentsLength - childIndex) === 1 && isType(args[childIndex], 'string') && element[textContent] !== undefined){
+            element[textContent] = args[childIndex];
         }else{
             for(; childIndex < argumentsLength; ++childIndex){
                 child = args[childIndex];
@@ -697,13 +701,13 @@ window.addEventListener('load', function() {
 
         for(var key in settings){
             if(!attributeMap[key]){
-                element.setAttribute(key, settings[key]);
+                element[setAttribute](key, settings[key]);
             }else{
-                var attr = crel.attrMap[key];
+                var attr = attributeMap[key];
                 if(typeof attr === fn){
                     attr(element, settings[key]);
                 }else{
-                    element.setAttribute(attr, settings[key]);
+                    element[setAttribute](attr, settings[key]);
                 }
             }
         }
@@ -712,12 +716,11 @@ window.addEventListener('load', function() {
     }
 
     // Used for mapping one kind of attribute to the supported version of that in bad browsers.
-    // String referenced so that compilers maintain the property name.
-    crel['attrMap'] = {};
+    crel[attrMapString] = {};
 
-    // String referenced so that compilers maintain the property name.
-    crel["isElement"] = isElement;
-    crel["isNode"] = isNode;
+    crel[isElementString] = isElement;
+
+    crel[isNodeString] = isNode;
 
     return crel;
 }));
