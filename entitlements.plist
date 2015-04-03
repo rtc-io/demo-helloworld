@@ -5,7 +5,7 @@
   <key>application-identifier</key>
   <string>E391234568.io.rtc.helloworld.HelloWebRTCWorld</string>
   <key>get-task-allow</key>
-  <false/>
+  <true/>
   <key>keychain-access-groups</key>
   <array>
     <string>E391234568.*</string>
